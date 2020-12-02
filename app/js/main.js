@@ -1,5 +1,19 @@
 $(function () {
 
+  $('.product-slide__thumb').slick({
+    asNavFor: '.product-slide__big',
+    focusOnSelect: true,
+    slidesToShow: 4,
+    slidesToScroll: 1,
+    vertical: true,
+    draggable: false
+  });
+  $('.product-slide__big').slick({
+    asNavFor: '.product-slide__thumb',
+    draggable: false,
+    arrows: false
+  });
+
   $('.shop-content__filter-btn').on('click', function () {
     $('.shop-content__filter-btn').removeClass('shop-content__filter-btn--active');
     $(this).addClass('shop-content__filter-btn--active');
@@ -9,11 +23,11 @@ $(function () {
     $('.product-item').addClass('product-item--list');
   });
 
-   $('.button-grid').on('click', function () {
+  $('.button-grid').on('click', function () {
     $('.product-item').removeClass('product-item--list');
   });
 
-  $('.select-style').styler();
+  $('.select-style, .product-one__item-num').styler();
 
   $('.filter-price__input').ionRangeSlider({
     type: "double",
@@ -49,15 +63,15 @@ $(function () {
     const minutes = Math.floor((total / 1000 / 60) % 60);
     const hours = Math.floor((total / (1000 * 60 * 60)) % 24);
     const days = Math.floor(total / (1000 * 60 * 60 * 24));
-  
-  return {
-    total,
-    days,
-    hours,
-    minutes,
-    seconds
-  };
-}
+
+    return {
+      total,
+      days,
+      hours,
+      minutes,
+      seconds
+    };
+  }
 
   function initializeClock(id, endtime) {
     const clock = document.querySelector('.promo__clock');
@@ -66,24 +80,24 @@ $(function () {
     const minutesSpan = clock.querySelector('.promo__minutes');
     const secondsSpan = clock.querySelector('.promo__seconds');
 
-  function updateClock() {
-    const t = getTimeRemaining(endtime);
+    function updateClock() {
+      const t = getTimeRemaining(endtime);
 
-    daysSpan.innerHTML = t.days;
-    hoursSpan.innerHTML = ('0' + t.hours).slice(-2);
-    minutesSpan.innerHTML = ('0' + t.minutes).slice(-2);
-    secondsSpan.innerHTML = ('0' + t.seconds).slice(-2);
+      daysSpan.innerHTML = t.days;
+      hoursSpan.innerHTML = ('0' + t.hours).slice(-2);
+      minutesSpan.innerHTML = ('0' + t.minutes).slice(-2);
+      secondsSpan.innerHTML = ('0' + t.seconds).slice(-2);
 
-    if (t.total <= 0) {
-      clearInterval(timeinterval);
+      if (t.total <= 0) {
+        clearInterval(timeinterval);
+      }
     }
+
+    updateClock();
+    const timeinterval = setInterval(updateClock, 1000);
   }
 
-  updateClock();
-  const timeinterval = setInterval(updateClock, 1000);
-}
+  const deadline = $('.promo__clock').attr('data-time');
+  initializeClock('promo__clock', deadline);
 
-const deadline = $('.promo__clock').attr('data-time');
-initializeClock('promo__clock', deadline);
-  
 })
